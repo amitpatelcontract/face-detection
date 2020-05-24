@@ -6,108 +6,117 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {PureComponent} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
-  View,
   Text,
-  StatusBar,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  ImageBackground,
 } from 'react-native';
+import {RNCamera} from 'react-native-camera';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const {height, width} = Dimensions.get('window');
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
+const PendingView = () => <View />;
+
+class App extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      image: null,
+      showCapture: false,
+    };
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        {this.state.image ? (
+          <View style={{flex: 1}}>
+            <ImageBackground
+              source={{uri: this.state.image}}
+              style={{flex: 1, width}}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({image: null});
+                }}
+                style={styles.capture}>
+                <Text style={{fontSize: 14}}> Go back </Text>
+              </TouchableOpacity>
+            </ImageBackground>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+        ) : (
+          <RNCamera
+            style={styles.preview}
+            type={RNCamera.Constants.Type.front}
+            flashMode={RNCamera.Constants.FlashMode.on}
+            onFacesDetected={(res) => {
+              if (res.faces.length > 0) {
+                this.setState({showCapture: true});
+              } else {
+                this.setState({showCapture: false});
+              }
+            }}
+            androidCameraPermissionOptions={{
+              title: 'Permission to use camera',
+              message: 'We need your permission to use your camera',
+              buttonPositive: 'Ok',
+              buttonNegative: 'Cancel',
+            }}
+            androidRecordAudioPermissionOptions={{
+              title: 'Permission to use audio recording',
+              message: 'We need your permission to use your audio',
+              buttonPositive: 'Ok',
+              buttonNegative: 'Cancel',
+            }}>
+            {({camera, status, recordAudioPermissionStatus}) => {
+              if (status !== 'READY') {
+                return <PendingView />;
+              }
+              return (
+                this.state.showCapture && (
+                  <TouchableOpacity
+                    onPress={() => this.takePicture(camera)}
+                    style={styles.capture}>
+                    <Text style={{fontSize: 14}}> SNAP </Text>
+                  </TouchableOpacity>
+                )
+              );
+            }}
+          </RNCamera>
+        )}
+      </View>
+    );
+  }
+
+  takePicture = async function (camera) {
+    const options = {quality: 1, mirrorImage: false};
+    const data = await camera.takePictureAsync(options);
+    this.setState({image: data.uri});
+  };
+}
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'black',
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  preview: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  capture: {
+    flex: 0,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    padding: 15,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    margin: 20,
   },
 });
 
