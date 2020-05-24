@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>554392307551-glj228pasrp1dhi82knn17ijg46163aa.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.554392307551-glj228pasrp1dhi82knn17ijg46163aa</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCBW6vSb-Xtqgjg9rhFmIsqEI2HpE1_as8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>554392307551</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.faceDetection</string>
+	<key>PROJECT_ID</key>
+	<string>copperfinchrn</string>
+	<key>STORAGE_BUCKET</key>
+	<string>copperfinchrn.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:554392307551:ios:f9a13f40460d0c6ef6d8ea</string>
+	<key>DATABASE_URL</key>
+	<string>https://copperfinchrn.firebaseio.com</string>
+</dict>
+</plist>
