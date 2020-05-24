@@ -59,6 +59,9 @@ class App extends PureComponent {
                 this.setState({showCapture: false});
               }
             }}
+            onFaceDetectionError={(res) => {
+              console.log(res);
+            }}
             androidCameraPermissionOptions={{
               title: 'Permission to use camera',
               message: 'We need your permission to use your camera',

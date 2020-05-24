@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "554392307551",
+    "firebase_url": "https://copperfinchrn.firebaseio.com",
+    "project_id": "copperfinchrn",
+    "storage_bucket": "copperfinchrn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554392307551:android:5840271c17126c72f6d8ea",
+        "android_client_info": {
+          "package_name": "com.facedetection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554392307551-p4l0kedim7p838q46p82o4mv6be7sq0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBphuExoxd6o1_amKkIcpE9kwveIeHcsoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554392307551-p4l0kedim7p838q46p82o4mv6be7sq0t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "554392307551-glj228pasrp1dhi82knn17ijg46163aa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.faceDetection"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
