@@ -27,6 +27,7 @@ class App extends PureComponent {
     this.state = {
       image: null,
       showCapture: false,
+      coordinates: {},
     };
   }
 
@@ -38,6 +39,17 @@ class App extends PureComponent {
             <ImageBackground
               source={{uri: this.state.image}}
               style={{flex: 1, width}}>
+              <View
+                style={{
+                  position: 'absolute',
+                  top: this.state.coordinates.origin.y,
+                  left: this.state.coordinates.origin.x,
+                  width: this.state.coordinates.size.width,
+                  height: this.state.coordinates.size.height,
+                  borderColor: 'red',
+                  borderWidth: 1,
+                }}
+              />
               <TouchableOpacity
                 onPress={() => {
                   this.setState({image: null});
@@ -54,7 +66,10 @@ class App extends PureComponent {
             flashMode={RNCamera.Constants.FlashMode.on}
             onFacesDetected={(res) => {
               if (res.faces.length > 0) {
-                this.setState({showCapture: true});
+                this.setState({
+                  showCapture: true,
+                  coordinates: res.faces[0].bounds,
+                });
               } else {
                 this.setState({showCapture: false});
               }
@@ -62,6 +77,7 @@ class App extends PureComponent {
             onFaceDetectionError={(res) => {
               console.log(res);
             }}
+            faceDetectionMode={RNCamera.Constants.FaceDetection.Mode.accurate}
             androidCameraPermissionOptions={{
               title: 'Permission to use camera',
               message: 'We need your permission to use your camera',
@@ -95,7 +111,7 @@ class App extends PureComponent {
   }
 
   takePicture = async function (camera) {
-    const options = {quality: 1, mirrorImage: false};
+    const options = {quality: 1};
     const data = await camera.takePictureAsync(options);
     this.setState({image: data.uri});
   };
