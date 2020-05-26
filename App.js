@@ -40,10 +40,8 @@ class App extends PureComponent {
         {this.state.showCamera ? (
           this.state.showPreview ? (
             <View style={{flex: 1}}>
-              <ImageBackground
-                source={{uri: this.state.image}}
-                style={{flex: 1, width}}>
-                <View
+              <Image source={{uri: this.state.image}} style={{width, height}} />
+              {/* <View
                   style={{
                     position: 'absolute',
                     top: this.state.coordinates.origin.y,
@@ -53,15 +51,14 @@ class App extends PureComponent {
                     borderColor: 'red',
                     borderWidth: 1,
                   }}
-                />
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState({showPreview: false, showCamera: false});
-                  }}
-                  style={styles.capture}>
-                  <Text style={{fontSize: 14}}>Done</Text>
-                </TouchableOpacity>
-              </ImageBackground>
+                /> */}
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({showPreview: false, showCamera: false});
+                }}
+                style={styles.capture}>
+                <Text style={{fontSize: 14}}>Done</Text>
+              </TouchableOpacity>
             </View>
           ) : (
             <RNCamera
@@ -72,10 +69,21 @@ class App extends PureComponent {
               fixOrientation={true}
               onFacesDetected={(res) => {
                 if (res.faces.length === 1) {
-                  this.setState({
-                    showCapture: true,
-                    coordinates: res.faces[0].bounds,
-                  });
+                  // console.log(
+                  //   res.faces[0].leftEyeOpenProbability,
+                  //   res.faces[0].rightEyeOpenProbability,
+                  // );
+                  if (
+                    res.faces[0].leftEyeOpenProbability > 0.3 &&
+                    res.faces[0].rightEyeOpenProbability > 0.3
+                  ) {
+                    this.setState({
+                      showCapture: true,
+                      coordinates: res.faces[0].bounds,
+                    });
+                  } else {
+                    this.setState({showCapture: false});
+                  }
                 } else {
                   this.setState({showCapture: false});
                 }
@@ -84,6 +92,12 @@ class App extends PureComponent {
                 console.log(res);
               }}
               faceDetectionMode={RNCamera.Constants.FaceDetection.Mode.accurate}
+              faceDetectionLandmarks={
+                RNCamera.Constants.FaceDetection.Landmarks.all
+              }
+              faceDetectionClassifications={
+                RNCamera.Constants.FaceDetection.Classifications.all
+              }
               androidCameraPermissionOptions={{
                 title: 'Permission to use camera',
                 message: 'We need your permission to use your camera',
@@ -160,13 +174,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   capture: {
-    flex: 0,
     backgroundColor: '#fff',
     borderRadius: 5,
     padding: 15,
     paddingHorizontal: 20,
-    alignSelf: 'center',
     margin: 20,
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 40,
   },
   userIcon: {
     width: 100,
@@ -178,6 +193,8 @@ const styles = StyleSheet.create({
     color: 'white',
     width: '80%',
     textAlign: 'center',
+    position: 'absolute',
+    bottom: 140,
   },
 });
 
