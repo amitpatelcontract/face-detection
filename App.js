@@ -68,6 +68,8 @@ class App extends PureComponent {
               style={styles.preview}
               type={RNCamera.Constants.Type.front}
               flashMode={RNCamera.Constants.FlashMode.on}
+              mirrorImage={true}
+              fixOrientation={true}
               onFacesDetected={(res) => {
                 if (res.faces.length === 1) {
                   this.setState({
@@ -100,11 +102,17 @@ class App extends PureComponent {
                 }
                 return (
                   this.state.showCapture && (
-                    <TouchableOpacity
-                      onPress={() => this.takePicture(camera)}
-                      style={styles.capture}>
-                      <Text style={{fontSize: 14}}> SNAP </Text>
-                    </TouchableOpacity>
+                    <>
+                      <Text style={styles.description}>
+                        Below button will be ready to click when your selfie is
+                        in the frame
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => this.takePicture(camera)}
+                        style={styles.capture}>
+                        <Text style={{fontSize: 14}}> SNAP </Text>
+                      </TouchableOpacity>
+                    </>
                   )
                 );
               }}
@@ -127,7 +135,12 @@ class App extends PureComponent {
   }
 
   takePicture = async function (camera) {
-    const options = {quality: 1};
+    const options = {
+      quality: 1,
+      mirrorImage: true,
+      forceUpOrientation: true,
+      // orientation: 'portrait',
+    };
     const data = await camera.takePictureAsync(options);
     this.setState({image: data.uri, showPreview: true});
   };
@@ -159,6 +172,11 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     alignSelf: 'center',
+  },
+  description: {
+    color: 'white',
+    width: '80%',
+    textAlign: 'center',
   },
 });
 
