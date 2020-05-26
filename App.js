@@ -139,7 +139,8 @@ class App extends PureComponent {
       quality: 1,
       mirrorImage: true,
       forceUpOrientation: true,
-      // orientation: 'portrait',
+      fixOrientation: true,
+      orientation: 'portrait',
     };
     const data = await camera.takePictureAsync(options);
     this.setState({image: data.uri, showPreview: true});
